@@ -95,10 +95,10 @@ function Simulator() {
         next[qubit]![column] = { kind: "control", target };
         next[target]![column] = { kind: "target" };
       } else {
-        const existing = prev[qubit]![column];
+        const existing = prev[qubit]![column]!;
         if (existing.kind === "control" || existing.kind === "target") {
           for (let q = 0; q < N_QUBITS; q++) {
-            const cell = prev[q]![column];
+            const cell = prev[q]![column]!;
             if (cell.kind === "control" || cell.kind === "target") {
               next[q]![column] = { kind: "empty" };
             }
@@ -113,10 +113,10 @@ function Simulator() {
   function clearCell(qubit: number, column: number) {
     setCircuit((prev) => {
       const next = prev.map((row) => row.slice());
-      const cell = prev[qubit]![column];
+      const cell = prev[qubit]![column]!;
       if (cell.kind === "control" || cell.kind === "target") {
         for (let q = 0; q < N_QUBITS; q++) {
-          const c = prev[q]![column];
+          const c = prev[q]![column]!;
           if (c.kind === "control" || c.kind === "target") next[q]![column] = { kind: "empty" };
         }
       } else {
