@@ -10,33 +10,52 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SyllabusRouteImport } from './routes/syllabus'
+import { Route as SyllabusChapterIdRouteImport } from './routes/syllabus.$chapterId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SyllabusRoute = SyllabusRouteImport.update({
+  id: '/syllabus',
+  path: '/syllabus',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SyllabusChapterIdRoute = SyllabusChapterIdRouteImport.update({
+  id: '/$chapterId',
+  path: '/$chapterId',
+  getParentRoute: () => SyllabusRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/syllabus': typeof SyllabusRouteWithChildren
+  '/syllabus/$chapterId': typeof SyllabusChapterIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/syllabus': typeof SyllabusRouteWithChildren
+  '/syllabus/$chapterId': typeof SyllabusChapterIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/syllabus': typeof SyllabusRouteWithChildren
+  '/syllabus/$chapterId': typeof SyllabusChapterIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/syllabus' | '/syllabus/$chapterId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/syllabus' | '/syllabus/$chapterId'
+  id: '__root__' | '/' | '/syllabus' | '/syllabus/$chapterId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  SyllabusRoute: typeof SyllabusRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +67,38 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/syllabus': {
+      id: '/syllabus'
+      path: '/syllabus'
+      fullPath: '/syllabus'
+      preLoaderRoute: typeof SyllabusRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/syllabus/$chapterId': {
+      id: '/syllabus/$chapterId'
+      path: '/$chapterId'
+      fullPath: '/syllabus/$chapterId'
+      preLoaderRoute: typeof SyllabusChapterIdRouteImport
+      parentRoute: typeof SyllabusRoute
+    }
   }
 }
 
+interface SyllabusRouteChildren {
+  SyllabusChapterIdRoute: typeof SyllabusChapterIdRoute
+}
+
+const SyllabusRouteChildren: SyllabusRouteChildren = {
+  SyllabusChapterIdRoute: SyllabusChapterIdRoute,
+}
+
+const SyllabusRouteWithChildren = SyllabusRoute._addFileChildren(
+  SyllabusRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  SyllabusRoute: SyllabusRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
