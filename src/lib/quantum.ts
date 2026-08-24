@@ -64,10 +64,11 @@ export function applySingle(
     seen.add(partner);
     const zeroIdx = bitOf(i, qubit, nQubits) === 0 ? i : partner;
     const oneIdx = zeroIdx === i ? partner : i;
-    const a0 = state[zeroIdx];
-    const a1 = state[oneIdx];
+    const a0 = state[zeroIdx]!;
+    const a1 = state[oneIdx]!;
     out[zeroIdx] = add(mul(matrix[0], a0), mul(matrix[1], a1));
     out[oneIdx] = add(mul(matrix[2], a0), mul(matrix[3], a1));
+
   }
   return out;
 }
@@ -82,7 +83,7 @@ export function applyCNOT(
   const out = state.slice();
   for (let i = 0; i < state.length; i++) {
     if (bitOf(i, control, nQubits) === 1) {
-      out[flipBit(i, target, nQubits)] = state[i];
+      out[flipBit(i, target, nQubits)] = state[i]!;
     }
   }
   return out;
@@ -108,7 +109,7 @@ export function simulate(circuit: Circuit): Complex[] {
   let state = zeroState(nQubits);
   for (let col = 0; col < nColumns; col++) {
     for (let q = 0; q < nQubits; q++) {
-      const cell = circuit[q][col];
+      const cell = circuit[q]![col]!;
       if (cell.kind === "single") {
         state = applySingle(state, SINGLE_GATES[cell.gate], q, nQubits);
       } else if (cell.kind === "control") {
@@ -143,10 +144,11 @@ export function blochVector(state: Complex[], qubit: number, nQubits: number) {
   let y = 0;
   let z = 0;
   for (let i = 0; i < state.length; i++) {
-    const a = state[i];
+    const a = state[i]!;
     if (bitOf(i, qubit, nQubits) === 0) {
       const j = flipBit(i, qubit, nQubits);
-      const b = state[j];
+      const b = state[j]!;
+
       // rho01 = a * conj(b)
       x += 2 * (a.re * b.re + a.im * b.im);
       y += 2 * (a.im * b.re - a.re * b.im);
