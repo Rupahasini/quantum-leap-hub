@@ -10,7 +10,13 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApplicationsRouteImport } from './routes/applications'
+import { Route as ProjectsRouteImport } from './routes/projects'
+import { Route as RewardsRouteImport } from './routes/rewards'
+import { Route as SimulatorRouteImport } from './routes/simulator'
+import { Route as StackRouteImport } from './routes/stack'
 import { Route as SyllabusRouteImport } from './routes/syllabus'
+import { Route as TechniquesRouteImport } from './routes/techniques'
 import { Route as SyllabusChapterIdRouteImport } from './routes/syllabus.$chapterId'
 
 const IndexRoute = IndexRouteImport.update({
@@ -18,9 +24,39 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApplicationsRoute = ApplicationsRouteImport.update({
+  id: '/applications',
+  path: '/applications',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProjectsRoute = ProjectsRouteImport.update({
+  id: '/projects',
+  path: '/projects',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RewardsRoute = RewardsRouteImport.update({
+  id: '/rewards',
+  path: '/rewards',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SimulatorRoute = SimulatorRouteImport.update({
+  id: '/simulator',
+  path: '/simulator',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StackRoute = StackRouteImport.update({
+  id: '/stack',
+  path: '/stack',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SyllabusRoute = SyllabusRouteImport.update({
   id: '/syllabus',
   path: '/syllabus',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TechniquesRoute = TechniquesRouteImport.update({
+  id: '/techniques',
+  path: '/techniques',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SyllabusChapterIdRoute = SyllabusChapterIdRouteImport.update({
@@ -31,31 +67,83 @@ const SyllabusChapterIdRoute = SyllabusChapterIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/applications': typeof ApplicationsRoute
+  '/projects': typeof ProjectsRoute
+  '/rewards': typeof RewardsRoute
+  '/simulator': typeof SimulatorRoute
+  '/stack': typeof StackRoute
   '/syllabus': typeof SyllabusRouteWithChildren
+  '/techniques': typeof TechniquesRoute
   '/syllabus/$chapterId': typeof SyllabusChapterIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/applications': typeof ApplicationsRoute
+  '/projects': typeof ProjectsRoute
+  '/rewards': typeof RewardsRoute
+  '/simulator': typeof SimulatorRoute
+  '/stack': typeof StackRoute
   '/syllabus': typeof SyllabusRouteWithChildren
+  '/techniques': typeof TechniquesRoute
   '/syllabus/$chapterId': typeof SyllabusChapterIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/applications': typeof ApplicationsRoute
+  '/projects': typeof ProjectsRoute
+  '/rewards': typeof RewardsRoute
+  '/simulator': typeof SimulatorRoute
+  '/stack': typeof StackRoute
   '/syllabus': typeof SyllabusRouteWithChildren
+  '/techniques': typeof TechniquesRoute
   '/syllabus/$chapterId': typeof SyllabusChapterIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/syllabus' | '/syllabus/$chapterId'
+  fullPaths:
+    | '/'
+    | '/applications'
+    | '/projects'
+    | '/rewards'
+    | '/simulator'
+    | '/stack'
+    | '/syllabus'
+    | '/techniques'
+    | '/syllabus/$chapterId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/syllabus' | '/syllabus/$chapterId'
-  id: '__root__' | '/' | '/syllabus' | '/syllabus/$chapterId'
+  to:
+    | '/'
+    | '/applications'
+    | '/projects'
+    | '/rewards'
+    | '/simulator'
+    | '/stack'
+    | '/syllabus'
+    | '/techniques'
+    | '/syllabus/$chapterId'
+  id:
+    | '__root__'
+    | '/'
+    | '/applications'
+    | '/projects'
+    | '/rewards'
+    | '/simulator'
+    | '/stack'
+    | '/syllabus'
+    | '/techniques'
+    | '/syllabus/$chapterId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ApplicationsRoute: typeof ApplicationsRoute
+  ProjectsRoute: typeof ProjectsRoute
+  RewardsRoute: typeof RewardsRoute
+  SimulatorRoute: typeof SimulatorRoute
+  StackRoute: typeof StackRoute
   SyllabusRoute: typeof SyllabusRouteWithChildren
+  TechniquesRoute: typeof TechniquesRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -67,11 +155,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/applications': {
+      id: '/applications'
+      path: '/applications'
+      fullPath: '/applications'
+      preLoaderRoute: typeof ApplicationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/projects': {
+      id: '/projects'
+      path: '/projects'
+      fullPath: '/projects'
+      preLoaderRoute: typeof ProjectsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rewards': {
+      id: '/rewards'
+      path: '/rewards'
+      fullPath: '/rewards'
+      preLoaderRoute: typeof RewardsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/simulator': {
+      id: '/simulator'
+      path: '/simulator'
+      fullPath: '/simulator'
+      preLoaderRoute: typeof SimulatorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/stack': {
+      id: '/stack'
+      path: '/stack'
+      fullPath: '/stack'
+      preLoaderRoute: typeof StackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/syllabus': {
       id: '/syllabus'
       path: '/syllabus'
       fullPath: '/syllabus'
       preLoaderRoute: typeof SyllabusRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/techniques': {
+      id: '/techniques'
+      path: '/techniques'
+      fullPath: '/techniques'
+      preLoaderRoute: typeof TechniquesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/syllabus/$chapterId': {
@@ -98,7 +228,13 @@ const SyllabusRouteWithChildren = SyllabusRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ApplicationsRoute: ApplicationsRoute,
+  ProjectsRoute: ProjectsRoute,
+  RewardsRoute: RewardsRoute,
+  SimulatorRoute: SimulatorRoute,
+  StackRoute: StackRoute,
   SyllabusRoute: SyllabusRouteWithChildren,
+  TechniquesRoute: TechniquesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
