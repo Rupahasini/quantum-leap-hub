@@ -32,7 +32,7 @@ export const Route = createFileRoute("/simulator")({
       },
     ],
   }),
-  component: Simulator;
+  component: Simulator,
 });
 
 const N_QUBITS = 3;
