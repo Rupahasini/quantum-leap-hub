@@ -78,6 +78,9 @@ function Home() {
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Button asChild size="lg">
+              <Link to="/auth">Create your learner profile</Link>
+            </Button>
+            <Button asChild size="lg" variant="outline">
               <Link to="/syllabus">Start Chapter 1</Link>
             </Button>
             <Button asChild size="lg" variant="outline">

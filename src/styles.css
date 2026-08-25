@@ -179,3 +179,22 @@
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
 }
+
+@utility input-field {
+  width: 100%;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background-color: color-mix(in oklab, var(--surface-2) 90%, transparent);
+  padding: 0.55rem 0.75rem;
+  font-size: 0.875rem;
+  color: var(--foreground);
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+@utility input-field-focus {
+  outline: none;
+}
+.input-field:focus {
+  outline: none;
+  border-color: color-mix(in oklab, var(--primary) 60%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary) 22%, transparent);
+}
