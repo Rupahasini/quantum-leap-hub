@@ -73,7 +73,7 @@ function Dashboard() {
     }
   }, [profile, level]);
 
-  if (isLoading) {
+  if (!user || isLoading) {
     return (
       <div className="grid min-h-[50vh] place-items-center text-muted-foreground">
         <Loader2 className="size-6 animate-spin" />
