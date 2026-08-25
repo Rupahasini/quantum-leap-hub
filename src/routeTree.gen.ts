@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as ApplicationsRouteImport } from './routes/applications'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ProjectsRouteImport } from './routes/projects'
@@ -18,11 +19,16 @@ import { Route as SimulatorRouteImport } from './routes/simulator'
 import { Route as StackRouteImport } from './routes/stack'
 import { Route as SyllabusRouteImport } from './routes/syllabus'
 import { Route as TechniquesRouteImport } from './routes/techniques'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as SyllabusChapterIdRouteImport } from './routes/syllabus.$chapterId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApplicationsRoute = ApplicationsRouteImport.update({
@@ -65,6 +71,11 @@ const TechniquesRoute = TechniquesRouteImport.update({
   path: '/techniques',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const SyllabusChapterIdRoute = SyllabusChapterIdRouteImport.update({
   id: '/$chapterId',
   path: '/$chapterId',
@@ -81,6 +92,7 @@ export interface FileRoutesByFullPath {
   '/stack': typeof StackRoute
   '/syllabus': typeof SyllabusRouteWithChildren
   '/techniques': typeof TechniquesRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
   '/syllabus/$chapterId': typeof SyllabusChapterIdRoute
 }
 export interface FileRoutesByTo {
@@ -93,11 +105,13 @@ export interface FileRoutesByTo {
   '/stack': typeof StackRoute
   '/syllabus': typeof SyllabusRouteWithChildren
   '/techniques': typeof TechniquesRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
   '/syllabus/$chapterId': typeof SyllabusChapterIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/applications': typeof ApplicationsRoute
   '/auth': typeof AuthRoute
   '/projects': typeof ProjectsRoute
@@ -106,6 +120,7 @@ export interface FileRoutesById {
   '/stack': typeof StackRoute
   '/syllabus': typeof SyllabusRouteWithChildren
   '/techniques': typeof TechniquesRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/syllabus/$chapterId': typeof SyllabusChapterIdRoute
 }
 export interface FileRouteTypes {
@@ -120,6 +135,7 @@ export interface FileRouteTypes {
     | '/stack'
     | '/syllabus'
     | '/techniques'
+    | '/dashboard'
     | '/syllabus/$chapterId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -132,10 +148,12 @@ export interface FileRouteTypes {
     | '/stack'
     | '/syllabus'
     | '/techniques'
+    | '/dashboard'
     | '/syllabus/$chapterId'
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
     | '/applications'
     | '/auth'
     | '/projects'
@@ -144,11 +162,13 @@ export interface FileRouteTypes {
     | '/stack'
     | '/syllabus'
     | '/techniques'
+    | '/_authenticated/dashboard'
     | '/syllabus/$chapterId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   ApplicationsRoute: typeof ApplicationsRoute
   AuthRoute: typeof AuthRoute
   ProjectsRoute: typeof ProjectsRoute
@@ -166,6 +186,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/applications': {
@@ -224,6 +251,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TechniquesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/syllabus/$chapterId': {
       id: '/syllabus/$chapterId'
       path: '/$chapterId'
@@ -233,6 +267,17 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
 interface SyllabusRouteChildren {
   SyllabusChapterIdRoute: typeof SyllabusChapterIdRoute
@@ -248,6 +293,7 @@ const SyllabusRouteWithChildren = SyllabusRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   ApplicationsRoute: ApplicationsRoute,
   AuthRoute: AuthRoute,
   ProjectsRoute: ProjectsRoute,

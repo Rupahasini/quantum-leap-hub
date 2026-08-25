@@ -1,8 +1,66 @@
-import { Link } from "@tanstack/react-router";
-import { Atom, Menu, Star } from "lucide-react";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { Atom, LogOut, Menu, Star } from "lucide-react";
 import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { avatarFor, useProfile, useSession } from "@/lib/auth";
 import { useProgress } from "@/lib/progress";
 import { cn } from "@/lib/utils";
+
+function AccountMenu() {
+  const { session, user, loading } = useSession();
+  const { data: profile } = useProfile(user?.id);
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  if (loading) return <span className="size-9" />;
+
+  if (!session) {
+    return (
+      <Link
+        to="/auth"
+        className="rounded-md border border-primary/50 bg-primary/12 px-3 py-1.5 text-sm font-medium text-primary transition-colors hover:bg-primary/20"
+      >
+        Log in
+      </Link>
+    );
+  }
+
+  async function signOut() {
+    await queryClient.cancelQueries();
+    queryClient.clear();
+    await supabase.auth.signOut();
+    navigate({ to: "/auth", replace: true });
+  }
+
+  return (
+    <div className="flex items-center gap-2">
+      <Link
+        to="/dashboard"
+        className="flex items-center gap-2 rounded-full border border-border bg-surface-2 py-1 pl-1 pr-3 text-sm transition-colors hover:border-primary/60"
+      >
+        <img
+          src={avatarFor(profile?.gender)}
+          alt="Your avatar"
+          loading="lazy"
+          width={512}
+          height={512}
+          className="size-7 rounded-full border border-primary/40 object-cover"
+        />
+        <span className="hidden max-w-24 truncate sm:block">
+          {profile?.display_name ?? "Dashboard"}
+        </span>
+      </Link>
+      <button
+        onClick={signOut}
+        aria-label="Sign out"
+        className="grid size-9 place-items-center rounded-md border border-border text-muted-foreground transition-colors hover:text-foreground"
+      >
+        <LogOut className="size-4" />
+      </button>
+    </div>
+  );
+}
 
 const links = [
   { to: "/", label: "Home" },
@@ -65,6 +123,7 @@ export function SiteHeader() {
 
         <div className="ml-auto flex items-center gap-2 lg:ml-0">
           <StarCounter />
+          <AccountMenu />
           <button
             aria-label="Toggle navigation"
             onClick={() => setOpen((v) => !v)}
