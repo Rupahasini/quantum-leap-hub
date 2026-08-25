@@ -73,7 +73,7 @@ function Dashboard() {
     }
   }, [profile, level]);
 
-  if (isLoading) {
+  if (!user || isLoading) {
     return (
       <div className="grid min-h-[50vh] place-items-center text-muted-foreground">
         <Loader2 className="size-6 animate-spin" />
@@ -85,7 +85,7 @@ function Dashboard() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
-      {needsDetails && <CompleteProfile userId={user!.id} profileName={profile?.display_name ?? ""} />}
+      {needsDetails && <CompleteProfile userId={user.id} profileName={profile?.display_name ?? ""} />}
 
       <section className="card-elevated relative overflow-hidden p-6 sm:p-8">
         <div className="absolute inset-0 bg-hero opacity-70" aria-hidden />
