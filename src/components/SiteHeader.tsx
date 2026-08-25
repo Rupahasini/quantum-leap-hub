@@ -64,6 +64,7 @@ function AccountMenu() {
 
 const links = [
   { to: "/", label: "Home" },
+  { to: "/dashboard", label: "Dashboard" },
   { to: "/syllabus", label: "Syllabus" },
   { to: "/simulator", label: "Circuit Lab" },
   { to: "/projects", label: "Projects" },
