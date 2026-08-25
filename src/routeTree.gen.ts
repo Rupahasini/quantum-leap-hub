@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApplicationsRouteImport } from './routes/applications'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as RewardsRouteImport } from './routes/rewards'
 import { Route as SimulatorRouteImport } from './routes/simulator'
@@ -27,6 +28,11 @@ const IndexRoute = IndexRouteImport.update({
 const ApplicationsRoute = ApplicationsRouteImport.update({
   id: '/applications',
   path: '/applications',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProjectsRoute = ProjectsRouteImport.update({
@@ -68,6 +74,7 @@ const SyllabusChapterIdRoute = SyllabusChapterIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/applications': typeof ApplicationsRoute
+  '/auth': typeof AuthRoute
   '/projects': typeof ProjectsRoute
   '/rewards': typeof RewardsRoute
   '/simulator': typeof SimulatorRoute
@@ -79,6 +86,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/applications': typeof ApplicationsRoute
+  '/auth': typeof AuthRoute
   '/projects': typeof ProjectsRoute
   '/rewards': typeof RewardsRoute
   '/simulator': typeof SimulatorRoute
@@ -91,6 +99,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/applications': typeof ApplicationsRoute
+  '/auth': typeof AuthRoute
   '/projects': typeof ProjectsRoute
   '/rewards': typeof RewardsRoute
   '/simulator': typeof SimulatorRoute
@@ -104,6 +113,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/applications'
+    | '/auth'
     | '/projects'
     | '/rewards'
     | '/simulator'
@@ -115,6 +125,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/applications'
+    | '/auth'
     | '/projects'
     | '/rewards'
     | '/simulator'
@@ -126,6 +137,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/applications'
+    | '/auth'
     | '/projects'
     | '/rewards'
     | '/simulator'
@@ -138,6 +150,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ApplicationsRoute: typeof ApplicationsRoute
+  AuthRoute: typeof AuthRoute
   ProjectsRoute: typeof ProjectsRoute
   RewardsRoute: typeof RewardsRoute
   SimulatorRoute: typeof SimulatorRoute
@@ -160,6 +173,13 @@ declare module '@tanstack/react-router' {
       path: '/applications'
       fullPath: '/applications'
       preLoaderRoute: typeof ApplicationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/projects': {
@@ -229,6 +249,7 @@ const SyllabusRouteWithChildren = SyllabusRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ApplicationsRoute: ApplicationsRoute,
+  AuthRoute: AuthRoute,
   ProjectsRoute: ProjectsRoute,
   RewardsRoute: RewardsRoute,
   SimulatorRoute: SimulatorRoute,
