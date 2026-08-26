@@ -23,6 +23,7 @@ import { Route as TestsRouteImport } from './routes/tests'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as ApiAssistantRouteImport } from './routes/api/assistant'
 import { Route as SyllabusChapterIdRouteImport } from './routes/syllabus.$chapterId'
+import { Route as TestsTestIdRouteImport } from './routes/tests.$testId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -93,6 +94,11 @@ const SyllabusChapterIdRoute = SyllabusChapterIdRouteImport.update({
   path: '/$chapterId',
   getParentRoute: () => SyllabusRoute,
 } as any)
+const TestsTestIdRoute = TestsTestIdRouteImport.update({
+  id: '/$testId',
+  path: '/$testId',
+  getParentRoute: () => TestsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -104,10 +110,11 @@ export interface FileRoutesByFullPath {
   '/stack': typeof StackRoute
   '/syllabus': typeof SyllabusRouteWithChildren
   '/techniques': typeof TechniquesRoute
-  '/tests': typeof TestsRoute
+  '/tests': typeof TestsRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/api/assistant': typeof ApiAssistantRoute
   '/syllabus/$chapterId': typeof SyllabusChapterIdRoute
+  '/tests/$testId': typeof TestsTestIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -119,10 +126,11 @@ export interface FileRoutesByTo {
   '/stack': typeof StackRoute
   '/syllabus': typeof SyllabusRouteWithChildren
   '/techniques': typeof TechniquesRoute
-  '/tests': typeof TestsRoute
+  '/tests': typeof TestsRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/api/assistant': typeof ApiAssistantRoute
   '/syllabus/$chapterId': typeof SyllabusChapterIdRoute
+  '/tests/$testId': typeof TestsTestIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -136,10 +144,11 @@ export interface FileRoutesById {
   '/stack': typeof StackRoute
   '/syllabus': typeof SyllabusRouteWithChildren
   '/techniques': typeof TechniquesRoute
-  '/tests': typeof TestsRoute
+  '/tests': typeof TestsRouteWithChildren
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/api/assistant': typeof ApiAssistantRoute
   '/syllabus/$chapterId': typeof SyllabusChapterIdRoute
+  '/tests/$testId': typeof TestsTestIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -157,6 +166,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/api/assistant'
     | '/syllabus/$chapterId'
+    | '/tests/$testId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -172,6 +182,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/api/assistant'
     | '/syllabus/$chapterId'
+    | '/tests/$testId'
   id:
     | '__root__'
     | '/'
@@ -188,6 +199,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/api/assistant'
     | '/syllabus/$chapterId'
+    | '/tests/$testId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -201,7 +213,7 @@ export interface RootRouteChildren {
   StackRoute: typeof StackRoute
   SyllabusRoute: typeof SyllabusRouteWithChildren
   TechniquesRoute: typeof TechniquesRoute
-  TestsRoute: typeof TestsRoute
+  TestsRoute: typeof TestsRouteWithChildren
   ApiAssistantRoute: typeof ApiAssistantRoute
 }
 
@@ -305,6 +317,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SyllabusChapterIdRouteImport
       parentRoute: typeof SyllabusRoute
     }
+    '/tests/$testId': {
+      id: '/tests/$testId'
+      path: '/$testId'
+      fullPath: '/tests/$testId'
+      preLoaderRoute: typeof TestsTestIdRouteImport
+      parentRoute: typeof TestsRoute
+    }
   }
 }
 
@@ -331,6 +350,16 @@ const SyllabusRouteWithChildren = SyllabusRoute._addFileChildren(
   SyllabusRouteChildren,
 )
 
+interface TestsRouteChildren {
+  TestsTestIdRoute: typeof TestsTestIdRoute
+}
+
+const TestsRouteChildren: TestsRouteChildren = {
+  TestsTestIdRoute: TestsTestIdRoute,
+}
+
+const TestsRouteWithChildren = TestsRoute._addFileChildren(TestsRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
@@ -342,7 +371,7 @@ const rootRouteChildren: RootRouteChildren = {
   StackRoute: StackRoute,
   SyllabusRoute: SyllabusRouteWithChildren,
   TechniquesRoute: TechniquesRoute,
-  TestsRoute: TestsRoute,
+  TestsRoute: TestsRouteWithChildren,
   ApiAssistantRoute: ApiAssistantRoute,
 }
 export const routeTree = rootRouteImport

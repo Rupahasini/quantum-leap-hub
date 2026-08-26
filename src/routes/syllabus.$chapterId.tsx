@@ -2,9 +2,11 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, CheckCircle2, Circle, Lightbulb, Star } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { Assignment } from "@/components/Assignment";
 import { CodeBlock } from "@/components/CodeBlock";
 import { Quiz } from "@/components/Quiz";
 import { Button } from "@/components/ui/button";
+import { assignmentByChapter, tests } from "@/lib/assessments";
 import { chapters } from "@/lib/curriculum";
 import { useProgress } from "@/lib/progress";
 
