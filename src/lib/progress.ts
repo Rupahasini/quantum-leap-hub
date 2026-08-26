@@ -8,6 +8,9 @@ export type ProgressState = {
   katasDone: string[];
   projectsSubmitted: string[];
   unlockedPerks: string[];
+  assignmentsDone: string[];
+  /** best stars earned per test id (tests are re-takeable, best score keeps) */
+  testStars: Record<string, number>;
 };
 
 const STORAGE_KEY = "qla-progress-v1";
@@ -20,6 +23,8 @@ const EMPTY: ProgressState = {
   katasDone: [],
   projectsSubmitted: [],
   unlockedPerks: [],
+  assignmentsDone: [],
+  testStars: {},
 };
 
 let state: ProgressState = EMPTY;
