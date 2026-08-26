@@ -11,6 +11,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { AiAssistant } from "@/components/AiAssistant";
 import { SiteFooter, SiteHeader } from "@/components/SiteHeader";
 import { Toaster } from "@/components/ui/sonner";
 
