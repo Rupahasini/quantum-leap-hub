@@ -2,9 +2,11 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, CheckCircle2, Circle, Lightbulb, Star } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { Assignment } from "@/components/Assignment";
 import { CodeBlock } from "@/components/CodeBlock";
 import { Quiz } from "@/components/Quiz";
 import { Button } from "@/components/ui/button";
+import { assignmentByChapter, tests } from "@/lib/assessments";
 import { chapters } from "@/lib/curriculum";
 import { useProgress } from "@/lib/progress";
 
@@ -38,6 +40,8 @@ function ChapterPage() {
   const { chapter } = Route.useLoaderData();
   const { completedChapters, katasDone, actions } = useProgress();
   const [showHint, setShowHint] = useState(false);
+  const assignment = assignmentByChapter(chapter.id);
+  const phaseTest = tests.find((t) => t.scope === chapter.track);
 
   const done = completedChapters.includes(chapter.id);
   const kataDone = katasDone.includes(chapter.kata.id);
@@ -144,6 +148,28 @@ function ChapterPage() {
           </Button>
         </div>
       </section>
+
+      {assignment && (
+        <div className="mt-8">
+          <Assignment assignment={assignment} />
+        </div>
+      )}
+
+      {phaseTest && (
+        <section className="panel mt-8 flex flex-wrap items-center justify-between gap-3 p-5">
+          <div>
+            <h2 className="text-base font-semibold">{phaseTest.title}</h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Finish the {chapter.track} chapters, then sit the graded test for up to 5 stars.
+            </p>
+          </div>
+          <Button asChild variant="outline" size="sm">
+            <Link to="/tests/$testId" params={{ testId: phaseTest.id }}>
+              Go to phase test
+            </Link>
+          </Button>
+        </section>
+      )}
 
       <nav className="mt-12 flex items-center justify-between gap-3 border-t border-border pt-6">
         {prev ? (

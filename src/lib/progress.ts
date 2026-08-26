@@ -8,6 +8,9 @@ export type ProgressState = {
   katasDone: string[];
   projectsSubmitted: string[];
   unlockedPerks: string[];
+  assignmentsDone: string[];
+  /** best stars earned per test id (tests are re-takeable, best score keeps) */
+  testStars: Record<string, number>;
 };
 
 const STORAGE_KEY = "qla-progress-v1";
@@ -20,6 +23,8 @@ const EMPTY: ProgressState = {
   katasDone: [],
   projectsSubmitted: [],
   unlockedPerks: [],
+  assignmentsDone: [],
+  testStars: {},
 };
 
 let state: ProgressState = EMPTY;
@@ -83,6 +88,23 @@ export const progressActions = {
       stars: state.stars + stars,
     });
     return true;
+  },
+  completeAssignment(id: string, stars: number) {
+    if (state.assignmentsDone.includes(id)) return false;
+    set({
+      ...state,
+      assignmentsDone: addOnce(state.assignmentsDone, id),
+      stars: state.stars + stars,
+    });
+    return true;
+  },
+  /** Awards only the improvement over the previous best score for this test. */
+  awardTest(id: string, stars: number) {
+    const best = state.testStars[id] ?? 0;
+    if (stars <= best) return 0;
+    const delta = stars - best;
+    set({ ...state, testStars: { ...state.testStars, [id]: stars }, stars: state.stars + delta });
+    return delta;
   },
   toggleChapter(id: string) {
     const done = state.completedChapters.includes(id);

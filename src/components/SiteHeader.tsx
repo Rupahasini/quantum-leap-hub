@@ -67,6 +67,7 @@ const links = [
   { to: "/dashboard", label: "Dashboard" },
   { to: "/syllabus", label: "Syllabus" },
   { to: "/simulator", label: "Circuit Lab" },
+  { to: "/tests", label: "Tests" },
   { to: "/projects", label: "Projects" },
   { to: "/techniques", label: "Techniques" },
   { to: "/applications", label: "Applications" },
