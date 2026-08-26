@@ -149,6 +149,28 @@ function ChapterPage() {
         </div>
       </section>
 
+      {assignment && (
+        <div className="mt-8">
+          <Assignment assignment={assignment} />
+        </div>
+      )}
+
+      {phaseTest && (
+        <section className="panel mt-8 flex flex-wrap items-center justify-between gap-3 p-5">
+          <div>
+            <h2 className="text-base font-semibold">{phaseTest.title}</h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Finish the {chapter.track} chapters, then sit the graded test for up to 5 stars.
+            </p>
+          </div>
+          <Button asChild variant="outline" size="sm">
+            <Link to="/tests/$testId" params={{ testId: phaseTest.id }}>
+              Go to phase test
+            </Link>
+          </Button>
+        </section>
+      )}
+
       <nav className="mt-12 flex items-center justify-between gap-3 border-t border-border pt-6">
         {prev ? (
           <Link
