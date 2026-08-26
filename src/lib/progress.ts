@@ -89,6 +89,23 @@ export const progressActions = {
     });
     return true;
   },
+  completeAssignment(id: string, stars: number) {
+    if (state.assignmentsDone.includes(id)) return false;
+    set({
+      ...state,
+      assignmentsDone: addOnce(state.assignmentsDone, id),
+      stars: state.stars + stars,
+    });
+    return true;
+  },
+  /** Awards only the improvement over the previous best score for this test. */
+  awardTest(id: string, stars: number) {
+    const best = state.testStars[id] ?? 0;
+    if (stars <= best) return 0;
+    const delta = stars - best;
+    set({ ...state, testStars: { ...state.testStars, [id]: stars }, stars: state.stars + delta });
+    return delta;
+  },
   toggleChapter(id: string) {
     const done = state.completedChapters.includes(id);
     set({
