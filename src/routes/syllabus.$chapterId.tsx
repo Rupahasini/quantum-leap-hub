@@ -40,6 +40,8 @@ function ChapterPage() {
   const { chapter } = Route.useLoaderData();
   const { completedChapters, katasDone, actions } = useProgress();
   const [showHint, setShowHint] = useState(false);
+  const assignment = assignmentByChapter(chapter.id);
+  const phaseTest = tests.find((t) => t.scope === chapter.track);
 
   const done = completedChapters.includes(chapter.id);
   const kataDone = katasDone.includes(chapter.kata.id);
