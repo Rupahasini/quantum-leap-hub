@@ -137,6 +137,7 @@ function RootComponent() {
         </main>
         <SiteFooter />
       </div>
+      <AiAssistant />
       <Toaster position="bottom-right" />
     </QueryClientProvider>
   );
