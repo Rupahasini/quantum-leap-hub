@@ -1,10 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { Check, CircleDashed, Loader2, Sparkles, Star, Trophy } from "lucide-react";
+import { Check, CircleDashed, Loader2, Star, Trophy } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
+import { QuantumRoadmap } from "@/components/QuantumRoadmap";
 import { chapters } from "@/lib/curriculum";
 import { useProgress } from "@/lib/progress";
 import {
