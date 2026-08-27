@@ -39,8 +39,6 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
   component: Dashboard,
 });
 
-const TRACKS = ["Foundations", "Quantum Computing", "Quantum Machine Learning"] as const;
-
 function Dashboard() {
   const { user } = useSession();
   const { data: profile, isLoading } = useProfile(user?.id);
