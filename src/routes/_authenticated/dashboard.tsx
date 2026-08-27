@@ -151,61 +151,49 @@ function Dashboard() {
       </section>
 
       <section className="mt-12">
-        <h2 className="text-2xl font-semibold">Your progress roadmap</h2>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Every phase you complete lights up the path and adds XP toward your next level.
-        </p>
+        <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <h2 className="text-2xl font-semibold">Your progress roadmap</h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Every phase you complete lights up the entangled path and adds XP toward your next level.
+            </p>
+          </div>
+          <div className="flex items-center gap-3 text-sm">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface-2 px-3 py-1">
+              <Star className="size-4 text-star" />
+              {progress.available} stars available
+            </span>
+            <Link
+              to="/tests"
+              className="inline-flex items-center gap-1.5 rounded-full border border-primary/40 bg-primary/10 px-3 py-1 text-primary transition-colors hover:bg-primary/20"
+            >
+              <Trophy className="size-4" />
+              Take graded tests
+            </Link>
+          </div>
+        </div>
 
-        <div className="mt-8 space-y-10">
-          {TRACKS.map((track) => {
-            const trackChapters = chapters.filter((c) => c.track === track);
-            const done = trackChapters.filter((c) => progress.completedChapters.includes(c.id)).length;
-            return (
-              <div key={track}>
-                <div className="mb-4 flex flex-wrap items-center gap-3">
-                  <h3 className="font-display text-lg font-semibold">{track}</h3>
-                  <span className="rounded-full border border-border bg-surface-2 px-2.5 py-0.5 font-mono text-[11px] text-muted-foreground">
-                    {done}/{trackChapters.length} phases
-                  </span>
-                  {done === trackChapters.length && (
-                    <span className="inline-flex items-center gap-1 text-xs text-success">
-                      <Sparkles className="size-3.5" /> track complete
-                    </span>
-                  )}
-                </div>
-                <ol className="relative space-y-3 border-l border-border pl-6">
-                  {trackChapters.map((ch) => {
-                    const complete = progress.completedChapters.includes(ch.id);
-                    return (
-                      <li key={ch.id} className="relative">
-                        <span
-                          className={
-                            "absolute -left-[31px] grid size-6 place-items-center rounded-full border transition-colors " +
-                            (complete
-                              ? "border-success bg-success/20 text-success"
-                              : "border-border bg-surface-2 text-muted-foreground")
-                          }
-                        >
-                          {complete ? <Check className="size-3.5" /> : <CircleDashed className="size-3.5" />}
-                        </span>
-                        <Link
-                          to="/syllabus/$chapterId"
-                          params={{ chapterId: ch.id }}
-                          className="panel block p-4 transition-all hover:border-primary/60 hover:bg-primary/5"
-                        >
-                          <p className="font-mono text-[11px] uppercase tracking-[0.15em] text-primary">
-                            Phase {String(ch.index).padStart(2, "0")}
-                          </p>
-                          <p className="mt-1 text-sm font-semibold">{ch.title}</p>
-                          <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{ch.summary}</p>
-                        </Link>
-                      </li>
-                    );
-                  })}
-                </ol>
+        <QuantumRoadmap />
+
+        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            { icon: Check, label: "Phases", value: `${progress.completedChapters.length}/${chapters.length}` },
+            { icon: Star, label: "Stars", value: progress.available },
+            { icon: Trophy, label: "Projects", value: progress.projectsSubmitted.length },
+            { icon: CircleDashed, label: "Tests passed", value: Object.keys(progress.testStars).length },
+          ].map((s) => (
+            <div key={s.label} className="card-elevated flex items-center gap-3 p-4">
+              <div className="grid size-10 place-items-center rounded-full border border-border bg-surface-2">
+                <s.icon className="size-5 text-primary" />
               </div>
-            );
-          })}
+              <div>
+                <dt className="font-mono text-[10px] uppercase tracking-[0.15em] text-muted-foreground">
+                  {s.label}
+                </dt>
+                <dd className="font-display text-xl font-semibold tabular-nums">{s.value}</dd>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
     </div>
